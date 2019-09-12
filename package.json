@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/sijp/services-comm/issues"
   },
-  "homepage": "https://github.com/sijp/services-comm#readme"
+  "homepage": "https://github.com/sijp/services-comm#readme",
+  "dependencies": {
+    "lerna": "^3.16.4"
+  }
 }
