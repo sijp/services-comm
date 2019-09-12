@@ -1,18 +1,18 @@
 {
-  "name": "services-comm-base",
+  "name": "services-comm",
   "version": "1.0.0",
   "description": "NodeJS Micro Services Communication Abstraction",
+  "main": "index.js",
   "author": "Shlomi Israel",
   "license": "MIT",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/sijp/services-comm.git"
   },
   "bugs": {
     "url": "https://github.com/sijp/services-comm/issues"
-  },
-  "homepage": "https://github.com/sijp/services-comm#readme",
-  "dependencies": {
-    "lerna": "^3.16.4"
   }
 }
