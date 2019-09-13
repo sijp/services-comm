@@ -1,19 +1,21 @@
 {
-  "name": "services-comm-base",
+  "name": "services-comm-test",
   "version": "1.0.0",
-  "description": "NodeJS Micro Services Communication Abstraction",
+  "description": "NodeJS Micro Services Communication Abstraction test suite",
+  "main": "test.js",
   "author": "Shlomi Israel",
   "license": "MIT",
+  "scripts": {
+    "test": "npx mocha"
+  },
+  "dependencies": {
+    "services-comm": "^1.0.0"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/sijp/services-comm.git"
   },
   "bugs": {
     "url": "https://github.com/sijp/services-comm/issues"
-  },
-  "homepage": "https://github.com/sijp/services-comm#readme",
-  "dependencies": {
-    "lerna": "^3.16.4",
-    "mocha": "^6.2.0"
   }
 }
