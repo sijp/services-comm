@@ -21,9 +21,9 @@ describe("services-comm", () => {
         }
       });
 
-      assert.equal(comm, assertedComm);
       assert.equal(inited, 1);
       assert.equal(connected, 1);
+      assert.equal(comm, assertedComm);
     });
 
     it("should init before connect", () => {
