@@ -6,6 +6,7 @@ describe("integration", () => {
     it("should communicate between to comms", async () => {
       let comm1;
       const expectedValue = "test";
+
       let realValue;
 
       const c1 = servicesComm.loadServices({
