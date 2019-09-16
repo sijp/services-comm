@@ -17,7 +17,8 @@ describe("integration", () => {
               comm1 = comm;
             },
             async sendValue(value) {
-              (await comm1).service2.echo(value);
+              const s2 = (await comm1).service2;
+              s2.echo(value);
             }
           }
         }
