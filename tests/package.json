@@ -6,7 +6,7 @@
   "author": "Shlomi Israel",
   "license": "MIT",
   "scripts": {
-    "test": "npx mocha"
+    "test": "npx mocha --opts ./mocha.opts"
   },
   "dependencies": {
     "services-comm": "^1.0.0"

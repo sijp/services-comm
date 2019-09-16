@@ -1,3 +1,5 @@
+const proxify = require("./proxify");
+
 module.exports = {
   loadServices(services) {
     const comm = Object.entries(services).reduce((commMemo, entry) => {
@@ -10,7 +12,7 @@ module.exports = {
     }, {});
 
     Object.keys(services).forEach(serviceName =>
-      comm[serviceName].connect(comm)
+      comm[serviceName].connect(proxify(comm))
     );
 
     return comm;
