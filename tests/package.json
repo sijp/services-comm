@@ -1,13 +1,15 @@
 {
-  "name": "services-comm",
+  "name": "services-comm-test",
   "version": "1.0.0",
-  "description": "NodeJS Micro Services Communication Abstraction",
-  "main": "index.js",
+  "description": "NodeJS Micro Services Communication Abstraction test suite",
+  "main": "test.js",
   "author": "Shlomi Israel",
   "license": "MIT",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node index.js"
+    "test": "npx mocha --opts ./mocha.opts"
+  },
+  "dependencies": {
+    "services-comm": "^1.0.0"
   },
   "repository": {
     "type": "git",
@@ -15,8 +17,5 @@
   },
   "bugs": {
     "url": "https://github.com/sijp/services-comm/issues"
-  },
-  "dependencies": {
-    "amqplib": "^0.5.5"
   }
 }

@@ -13,6 +13,7 @@
   },
   "homepage": "https://github.com/sijp/services-comm#readme",
   "dependencies": {
-    "lerna": "^3.16.4"
+    "lerna": "^3.16.4",
+    "mocha": "^6.2.0"
   }
 }
