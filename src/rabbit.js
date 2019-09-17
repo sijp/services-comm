@@ -1,17 +1,29 @@
 const amqp = require("amqplib");
 const uuid4 = require("uuid/v4");
-
+let rabbitConn;
 let channel;
+
+let connected = false;
+let disconnecting = false;
 
 module.exports = {
   async connect() {
-    const rabbitConn = await amqp.connect("amqp://guest:guest@localhost", {});
+    if (connected) return;
+    connected = true;
+    rabbitConn = await amqp.connect("amqp://guest:guest@localhost", {});
     channel = await rabbitConn.createChannel();
+  },
+
+  async disconnect() {
+    if (disconnecting === true) return false;
+    disconnecting = true;
+    return new Promise(resolve => {
+      setTimeout(() => resolve(rabbitConn.close()), 500);
+    });
   },
 
   defineMethod(serviceName, methodName, method) {
     const queueName = `${serviceName}.${methodName}`;
-    console.log(`define method ${queueName}`);
     channel.assertQueue(queueName);
     channel.consume(queueName, msg => {
       const message = JSON.parse(msg.content.toString());
@@ -19,7 +31,6 @@ module.exports = {
 
       const result = method(...args);
 
-      console.log("GOT RESULT", serviceName, methodName, result);
       channel.sendToQueue(
         msg.properties.replyTo,
         Buffer.from(JSON.stringify({ result })),
@@ -38,7 +49,6 @@ module.exports = {
     });
     return new Promise((resolve, reject) => {
       const queueName = `${serviceName}.${methodName}`;
-      console.log(`call method ${queueName}`);
 
       const correlationId = uuid4();
 
@@ -49,7 +59,10 @@ module.exports = {
           try {
             const { result } = JSON.parse(msg.content.toString());
 
-            setImmediate(() => channel.cancel(consumeTag));
+            setImmediate(async () => {
+              const { consumerTag } = await consumeTag;
+              channel.cancel(consumerTag);
+            });
             resolve(result);
           } catch (error) {
             reject(error);

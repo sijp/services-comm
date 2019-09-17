@@ -42,6 +42,9 @@ describe("integration", function() {
       await c1.service1.sendValue(expectedValue);
 
       assert.equal(expectedValue, realValue);
+
+      servicesComm1.disconnect();
+      servicesComm2.disconnect();
     });
   });
 });

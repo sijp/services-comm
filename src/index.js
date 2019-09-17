@@ -26,5 +26,8 @@ module.exports = {
     );
 
     return comm;
+  },
+  disconnect() {
+    rabbit.disconnect();
   }
 };

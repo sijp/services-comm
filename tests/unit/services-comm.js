@@ -24,6 +24,8 @@ describe("unit", function() {
         assert.equal(inited, 1);
         assert.equal(connected, 1);
         assert.notEqual(assertedComm, undefined);
+
+        servicesComm.disconnect();
       });
 
       it("should init before connect", async function() {
@@ -45,6 +47,8 @@ describe("unit", function() {
 
         assert.equal(initOrder, 1);
         assert.equal(connectOrder, 2);
+
+        servicesComm.disconnect();
       });
     });
   });
