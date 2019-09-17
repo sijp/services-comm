@@ -1,8 +1,8 @@
 const assert = require("assert");
 
-describe("integration", () => {
-  describe("services-comm", () => {
-    it("should communicate between to comms on the same process", async () => {
+describe("integration", function() {
+  describe("services-comm", function() {
+    it("should communicate between to comms on the same process", async function() {
       delete require.cache[require.resolve("services-comm")];
       const servicesComm1 = require("services-comm");
       delete require.cache[require.resolve("services-comm")];

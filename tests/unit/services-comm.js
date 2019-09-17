@@ -1,9 +1,9 @@
 const assert = require("assert");
 const servicesComm = require("services-comm");
-describe("unit", () => {
-  describe("services-comm", () => {
-    describe("#loadServices", () => {
-      it("should load a single service", async () => {
+describe("unit", function() {
+  describe("services-comm", function() {
+    describe("#loadServices", function() {
+      it("should load a single service", async function() {
         let inited = 0;
         let connected = 0;
         let assertedComm;
@@ -26,7 +26,7 @@ describe("unit", () => {
         assert.notEqual(assertedComm, undefined);
       });
 
-      it("should init before connect", async () => {
+      it("should init before connect", async function() {
         let counter = 0;
         let initOrder;
         let connectOrder;
@@ -36,7 +36,7 @@ describe("unit", () => {
               initialize() {
                 initOrder = ++counter;
               },
-              connect(newComm) {
+              connect() {
                 connectOrder = ++counter;
               }
             }

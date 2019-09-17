@@ -1,4 +1,5 @@
 const amqp = require("amqplib");
+const uuid4 = require("uuid/v4");
 
 let channel;
 
@@ -32,23 +33,27 @@ module.exports = {
   },
 
   async callMethod(serviceName, methodName, ...args) {
-    return new Promise(async (resolve, reject) => {
+    const callbackQueue = await channel.assertQueue("", {
+      exclusive: true
+    });
+    return new Promise((resolve, reject) => {
       const queueName = `${serviceName}.${methodName}`;
       console.log(`call method ${queueName}`);
 
-      const callbackQueue = await channel.assertQueue("", {
-        exclusive: true
-      });
+      const correlationId = uuid4();
 
-      const correlationId = generateUuid();
-
-      channel.consume(
+      const consumeTag = channel.consume(
         callbackQueue.queue,
         msg => {
           if (msg.properties.correlationId !== correlationId) return;
-          const { result } = JSON.parse(msg.content.toString());
-          console.log("Callback called!!!!!!!!!!!!!!", result);
-          resolve(result);
+          try {
+            const { result } = JSON.parse(msg.content.toString());
+
+            setImmediate(() => channel.cancel(consumeTag));
+            resolve(result);
+          } catch (error) {
+            reject(error);
+          }
         },
         {
           noAck: true
@@ -62,11 +67,3 @@ module.exports = {
     });
   }
 };
-
-function generateUuid() {
-  return (
-    Math.random().toString() +
-    Math.random().toString() +
-    Math.random().toString()
-  );
-}
