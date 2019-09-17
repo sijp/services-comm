@@ -1,4 +1,6 @@
-module.exports = function proxify(comm, memo) {
+const rabbit = require("./rabbit");
+
+module.exports = function proxify(comm) {
   return new Proxy(comm, {
     get(target, serviceName) {
       if (Reflect.has(target, serviceName)) {
@@ -7,14 +9,9 @@ module.exports = function proxify(comm, memo) {
       return new Proxy(
         {},
         {
-          get(target, methodName) {
-            return function(...args) {
-              const otherComm = memo.find(
-                c =>
-                  Reflect.has(c, serviceName) &&
-                  Reflect.has(c[serviceName], methodName)
-              );
-              return otherComm[serviceName][methodName](...args);
+          get(_target, methodName) {
+            return async function(...args) {
+              await rabbit.callMethod(serviceName, methodName, ...args);
             };
           }
         }

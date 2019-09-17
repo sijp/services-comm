@@ -3,11 +3,11 @@ const servicesComm = require("services-comm");
 describe("unit", () => {
   describe("services-comm", () => {
     describe("#loadServices", () => {
-      it("should load a single service", () => {
+      it("should load a single service", async () => {
         let inited = 0;
         let connected = 0;
         let assertedComm;
-        servicesComm.loadServices({
+        await servicesComm.loadServices({
           dummy: {
             module: {
               initialize() {
@@ -26,11 +26,11 @@ describe("unit", () => {
         assert.notEqual(assertedComm, undefined);
       });
 
-      it("should init before connect", () => {
+      it("should init before connect", async () => {
         let counter = 0;
         let initOrder;
         let connectOrder;
-        servicesComm.loadServices({
+        await servicesComm.loadServices({
           dummy: {
             module: {
               initialize() {

@@ -1,15 +1,19 @@
 const assert = require("assert");
-const servicesComm = require("services-comm");
 
 describe("integration", () => {
   describe("services-comm", () => {
-    it("should communicate between to comms", async () => {
+    it("should communicate between to comms on the same process", async () => {
+      delete require.cache[require.resolve("services-comm")];
+      const servicesComm1 = require("services-comm");
+      delete require.cache[require.resolve("services-comm")];
+      const servicesComm2 = require("services-comm");
+
       let comm1;
       const expectedValue = "test";
 
       let realValue;
 
-      const c1 = servicesComm.loadServices({
+      const c1 = await servicesComm1.loadServices({
         service1: {
           module: {
             initialize() {},
@@ -18,19 +22,19 @@ describe("integration", () => {
             },
             async sendValue(value) {
               const s2 = (await comm1).service2;
-              s2.echo(value);
+              await s2.echo(value);
             }
           }
         }
       });
 
-      servicesComm.loadServices({
+      await servicesComm2.loadServices({
         service2: {
           module: {
             initialize() {},
             connect() {},
             echo(value) {
-              realValue = value;
+              return (realValue = value);
             }
           }
         }

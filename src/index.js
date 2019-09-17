@@ -1,9 +1,9 @@
 const proxify = require("./proxify");
-
-const memo = [];
+const rabbit = require("./rabbit");
 
 module.exports = {
-  loadServices(services) {
+  async loadServices(services) {
+    await rabbit.connect();
     const comm = Object.entries(services).reduce((commMemo, entry) => {
       const [serviceName, service] = entry;
       return {
@@ -13,11 +13,17 @@ module.exports = {
       };
     }, {});
 
-    Object.keys(services).forEach(serviceName =>
-      comm[serviceName].connect(proxify(comm, memo))
-    );
+    Object.entries(services).forEach(serviceEntry => {
+      const [serviceName, service] = serviceEntry;
+      Object.entries(service.module).forEach(methodEntry => {
+        const [methodName, method] = methodEntry;
+        rabbit.defineMethod(serviceName, methodName, method);
+      });
+    });
 
-    memo.push(comm);
+    Object.keys(services).forEach(serviceName =>
+      comm[serviceName].connect(proxify(comm))
+    );
 
     return comm;
   }
